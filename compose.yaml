@@ -1,0 +1,37 @@
+services:
+  cli:
+    hostname: cli
+    build:
+      context: .
+      args:
+        PHP_VERSION: 8.4
+    volumes:
+      - ./var/www:/app:ro
+    environment:
+      PHP_EXTENSIONS: 'bcmath bz2 calendar exif gd gettext gmp intl mysqli opcache pdo_mysql shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl xdebug pcov redis'
+  cron:
+    hostname: cron
+    extends:
+      service: cli
+    environment:
+      CRONTAB: '* * * * * php -v >> /tmp/cron.log'
+    command: run-cron
+  fpm:
+    hostname: fpm
+    extends:
+      service: cli
+    command: run-fpm
+  nginx:
+    image: nginx:1.27.5-alpine-slim
+    working_dir: /app
+    hostname: nginx
+    environment:
+      PS1: '\u@\h:\w$ '
+    depends_on:
+      - fpm
+      - cron
+    ports:
+      - '80:80'
+    volumes:
+      - ./var/www:/app:ro
+      - ./var/nginx:/etc/nginx/conf.d:ro

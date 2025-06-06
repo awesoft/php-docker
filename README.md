@@ -6,11 +6,11 @@ A minimal, production-ready PHP Docker image built on Alpine Linux
 
 ## Features
 
-- Based on `php:8.4-alpine`
+- Based on `php:8.*-alpine`
 - Common extensions preinstalled:
   - Core: `bcmath`, `bz2`, `calendar`, `exif`, `gd`, `gettext`, `gmp`, `intl`, `mysqli`, `pdo_mysql`, `zip`, `soap`, `sockets`, `pcntl`, etc.
   - PECL: `xdebug`, `redis`, `pcov`
-- Includes `composer` command (version 2.*)
+- Includes `composer` command (version `2.*`)
 - Clean non-root `app` user with UID `1000`
 
 ---

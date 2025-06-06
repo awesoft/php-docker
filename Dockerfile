@@ -2,6 +2,11 @@ ARG PHP_VERSION=8.4
 
 FROM php:${PHP_VERSION}-fpm-alpine AS builder
 
+LABEL org.opencontainers.image.source="https://github.com/awesoft/php-docker"
+LABEL org.opencontainers.image.description="Magento 2 PHP Docker Image"
+LABEL org.opencontainers.image.authors="https://github.com/awesoft"
+LABEL org.opencontainers.image.licenses="MIT"
+
 RUN apk add --no-cache $PHPIZE_DEPS zip linux-headers build-base \
         libjpeg-turbo-dev libpng-dev freetype-dev giflib-dev libwebp-dev libavif-dev zlib-dev \
         oniguruma-dev libzip-dev gettext-dev icu-dev tidyhtml-dev libxslt-dev gmp-dev \
@@ -12,11 +17,6 @@ RUN apk add --no-cache $PHPIZE_DEPS zip linux-headers build-base \
     && docker-php-ext-enable xdebug redis pcov
 
 FROM php:${PHP_VERSION}-fpm-alpine
-
-LABEL org.opencontainers.image.source="https://github.com/awesoft/php-docker"
-LABEL org.opencontainers.image.description="Magento 2 PHP Docker Image"
-LABEL org.opencontainers.image.authors="https://github.com/awesoft"
-LABEL org.opencontainers.image.licenses="MIT"
 
 ENV PS1="\u@\h:\w$ "
 ENV HISTFILE="/dev/null"

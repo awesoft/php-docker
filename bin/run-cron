@@ -1,11 +1,6 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2086
 
-for ext in ${PHP_EXTENSIONS}; do
-  ln -svf /usr/local/etc/php/extensions/docker-php-ext-${ext}.ini /usr/local/etc/php/conf.d/ > /dev/null
-done
-
 echo "${CRONTAB}" | crontab -u app -
 
-echo "Running 'crond'"
 crond -f -P -s

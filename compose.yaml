@@ -8,7 +8,7 @@ services:
     volumes:
       - ./var/www:/app:ro
     environment:
-      PHP_EXTENSIONS: 'bcmath bz2 calendar exif gd gettext gmp intl mysqli opcache pdo_mysql shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl xdebug pcov redis'
+      PHP_EXTENSIONS: 'bcmath bz2 calendar exif gd gettext gmp intl mysqli opcache pdo_mysql shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl'
   cron:
     hostname: cron
     extends:

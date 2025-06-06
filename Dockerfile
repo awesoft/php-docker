@@ -27,9 +27,10 @@ RUN apk add --no-cache libjpeg-turbo libpng freetype giflib libwebp libavif cron
 COPY --from=builder /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
-COPY --from=composer --chmod=755 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 --chmod=755 /usr/bin/composer /usr/bin/composer
 COPY --chown=root:root etc/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY --chown=root:root --chmod=755 bin/ /usr/local/bin/
+COPY --chown=root:root --chmod=755 bin/docker-entrypoint /docker-entrypoint.sh
 
 RUN adduser -u 1000 -D -h /app -s /bin/bash app app \
     && mkdir -p /usr/local/etc/php/extensions/ \
@@ -38,3 +39,5 @@ RUN adduser -u 1000 -D -h /app -s /bin/bash app app \
 WORKDIR /app
 
 CMD ["php", "-v"]
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

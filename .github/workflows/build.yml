@@ -7,6 +7,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  IMAGE_NAME: awesoft/php
+  LATEST_VERSION: 8.4
 
 jobs:
   build:
@@ -53,7 +55,19 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.php }}
           tags: |
-            ${{ env.REGISTRY }}/awesoft/php:${{ matrix.php }}
-            ${{ env.REGISTRY }}/awesoft/php:${{ matrix.php }}-${{ github.sha }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/awesoft/php:buildcache-${{ matrix.php }}
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/awesoft/php:buildcache-${{ matrix.php }},mode=max
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.php }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.php }}-${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ matrix.php }}
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ matrix.php }},mode=max
+
+      - name: Tag and push latest image
+        if: matrix.php == env.LATEST_VERSION
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            PHP_VERSION=${{ env.LATEST_VERSION }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest

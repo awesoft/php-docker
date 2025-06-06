@@ -60,7 +60,7 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ matrix.php }}
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ matrix.php }},mode=max
 
-      - name: Tag and push latest image
+      - name: Tag as latest image
         if: matrix.php == env.LATEST_VERSION
         uses: docker/build-push-action@v6
         with:
@@ -71,3 +71,5 @@ jobs:
             PHP_VERSION=${{ env.LATEST_VERSION }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ env.LATEST_VERSION }}
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ env.LATEST_VERSION }},mode=max

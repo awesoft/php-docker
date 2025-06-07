@@ -1,8 +1,12 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2086
 
-for e in ${PHP_EXTENSIONS}; do
-  ln -svf /usr/local/etc/php/extensions/docker-php-ext-${e}.ini /usr/local/etc/php/conf.d/ > /dev/null
-done
+if [ -z "${PHP_EXTENSIONS}" ]; then
+  ln -svf /usr/local/etc/php/extensions/docker-php-ext-*.ini /usr/local/etc/php/conf.d/ > /dev/null
+else
+  for e in ${PHP_EXTENSIONS}; do
+    ln -svf /usr/local/etc/php/extensions/docker-php-ext-${e}.ini /usr/local/etc/php/conf.d/ > /dev/null
+  done
+fi
 
 exec "$@"

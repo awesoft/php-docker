@@ -58,20 +58,20 @@ jobs:
             PHP_VERSION=${{ matrix.php }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.php }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.php }}-${{ github.run_number }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.php }}-${{ github.run_id }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ matrix.php }}
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ matrix.php }},mode=max
           annotations: |
-            org.opencontainers.image.title="${{ env.IMAGE_TITLE }}"
-            org.opencontainers.image.description="${{ env.IMAGE_DESCRIPTION }}"
-            org.opencontainers.image.source="https://github.com/${{ github.repository }}"
-            org.opencontainers.image.authors="https://github.com/awesoft"
-            org.opencontainers.image.licenses="MIT"
+            org.opencontainers.image.title=${{ env.IMAGE_TITLE }}
+            org.opencontainers.image.description=${{ env.IMAGE_DESCRIPTION }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.authors=https://github.com/awesoft
+            org.opencontainers.image.licenses=MIT
             org.opencontainers.image.version=${{ matrix.php }}
-            org.opencontainers.image.revision=${{ github.run_number }}
-            org.opencontainers.image.base.name="php:${{ matrix.php }}-fpm-alpine"
-            org.opencontainers.image.vendor="Awesoft"
-            org.opencontainers.image.ref.name="PHP v${{ matrix.php }}"
+            org.opencontainers.image.revision=${{ github.run_id }}
+            org.opencontainers.image.base.name=php:${{ matrix.php }}-fpm-alpine
+            org.opencontainers.image.vendor=Awesoft
+            org.opencontainers.image.ref.name=PHP v${{ matrix.php }}
 
       - name: Tag as latest image
         if: matrix.php == env.LATEST_VERSION
@@ -87,13 +87,13 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ env.LATEST_VERSION }}
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache-${{ env.LATEST_VERSION }},mode=max
           annotations: |
-            org.opencontainers.image.title="${{ env.IMAGE_TITLE }}"
-            org.opencontainers.image.description="${{ env.IMAGE_DESCRIPTION }}"
-            org.opencontainers.image.source="https://github.com/${{ github.repository }}"
-            org.opencontainers.image.authors="https://github.com/awesoft"
-            org.opencontainers.image.licenses="MIT"
+            org.opencontainers.image.title=${{ env.IMAGE_TITLE }}
+            org.opencontainers.image.description=${{ env.IMAGE_DESCRIPTION }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.authors=https://github.com/awesoft
+            org.opencontainers.image.licenses=MIT
             org.opencontainers.image.version=latest
-            org.opencontainers.image.revision=${{ github.run_number }}
-            org.opencontainers.image.base.name="php:${{ env.LATEST_VERSION }}-fpm-alpine"
-            org.opencontainers.image.vendor="Awesoft"
-            org.opencontainers.image.ref.name="PHP v${{ env.LATEST_VERSION }}"
+            org.opencontainers.image.revision=${{ github.run_id }}
+            org.opencontainers.image.base.name=php:${{ env.LATEST_VERSION }}-fpm-alpine
+            org.opencontainers.image.vendor=Awesoft
+            org.opencontainers.image.ref.name=PHP v${{ env.LATEST_VERSION }}

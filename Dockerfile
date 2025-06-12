@@ -82,9 +82,11 @@ COPY --chown=root:root etc/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY --chown=root:root --chmod=755 bin/ /usr/local/bin/
 COPY --chown=root:root --chmod=755 bin/docker-entrypoint /docker-entrypoint.sh
 
-RUN adduser -u 1000 -D -h /app -s /bin/bash app app \
+RUN adduser -u 1000 -D -h /app -s /bin/sh app app \
     && mkdir -p /usr/local/etc/php/extensions/ \
-    && mv /usr/local/etc/php/conf.d/docker-php-ext-*.ini /usr/local/etc/php/extensions/
+    && mv /usr/local/etc/php/conf.d/docker-php-ext-*.ini /usr/local/etc/php/extensions/ \
+    && chmod -R 775 /usr/local/etc/php/conf.d \
+    && chown -R root:app /usr/local/etc/php/conf.d
 
 WORKDIR /app
 

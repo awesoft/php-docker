@@ -43,3 +43,7 @@ With volume mount:
 ```bash
 docker run -it --rm -v $(pwd):/app awesoft/php:8.4
 ```
+
+By default, `xdebug` and `pcov` extensions are disabled.
+To enable, set the environment variable `DEBUG_ENABLED` with the value of `1`
+

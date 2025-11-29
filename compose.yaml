@@ -5,10 +5,9 @@ services:
       context: .
       args:
         PHP_VERSION: 8.4
+        COMPOSER_VERSION: 2.9
     volumes:
       - ./var/www:/app:ro
-    environment:
-      PHP_EXTENSIONS: 'bcmath bz2 calendar exif gd gettext gmp intl mysqli opcache pdo_mysql shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl'
   cron:
     hostname: cron
     extends:
@@ -16,6 +15,9 @@ services:
     environment:
       CRONTAB: '* * * * * php -v >> /tmp/cron.log'
     command: run-cron
+    build:
+      args:
+        PHP_TYPE: fpm
   fpm:
     hostname: fpm
     extends:

@@ -1,12 +1,15 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2086
 
-if [ -z "${PHP_EXTENSIONS}" ]; then
-  ln -svf /usr/local/etc/php/extensions/docker-php-ext-*.ini /usr/local/etc/php/conf.d/ > /dev/null
-else
-  for e in ${PHP_EXTENSIONS}; do
-    ln -svf /usr/local/etc/php/extensions/docker-php-ext-${e}.ini /usr/local/etc/php/conf.d/ > /dev/null
-  done
+DEBUG_ENABLED=${DEBUG_ENABLED:-0}
+PHP_EXTENSIONS="bcmath bz2 calendar exif gd gettext gmp intl mysqli opcache pdo_mysql shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl redis"
+
+if [ "$DEBUG_ENABLED" = "1" ]; then
+    PHP_EXTENSIONS="${PHP_EXTENSIONS} xdebug pcov"
 fi
+
+for e in ${PHP_EXTENSIONS}; do
+  ln -svf /usr/local/etc/php/extensions/docker-php-ext-${e}.ini /usr/local/etc/php/conf.d/ > /dev/null
+done
 
 exec "$@"

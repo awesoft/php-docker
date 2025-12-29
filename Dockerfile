@@ -23,6 +23,7 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         tidyhtml-dev \
         libxslt-dev \
         gmp-dev \
+        openssl-dev \
     && pecl install \
         xdebug \
         redis \
@@ -51,7 +52,7 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         xsl \
         zip \
         pcntl \
-        $( (( ${PHP_VERSION/./} < 85 )) && echo opcache ) \
+        $( [ "$(echo $PHP_VERSION | cut -d. -f1,2 | tr -d .)" -lt 85 ] && echo opcache ) \
     && docker-php-ext-enable \
         xdebug \
         redis \
@@ -82,7 +83,8 @@ RUN apk add --no-cache \
         libxslt \
         gmp \
         zip \
-        unzip
+        unzip \
+        openssl
 
 COPY --from=php-stage /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 COPY --from=php-stage /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/

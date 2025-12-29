@@ -5,9 +5,10 @@ services:
       context: .
       args:
         PHP_VERSION: 8.4
-        COMPOSER_VERSION: 2.9
+        COMPOSER_VERSION: 2.8
     volumes:
-      - ./var/www:/app:ro
+      - ./var/www:/app
+      - composer-data:/.composer
   cron:
     hostname: cron
     extends:
@@ -37,3 +38,5 @@ services:
     volumes:
       - ./var/www:/app:ro
       - ./var/nginx:/etc/nginx/conf.d:ro
+volumes:
+  composer-data:

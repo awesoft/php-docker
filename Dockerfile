@@ -8,6 +8,7 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         zip \
         linux-headers \
         build-base \
+        libsodium-dev \
         libjpeg-turbo-dev \
         libpng-dev \
         freetype-dev \
@@ -32,15 +33,16 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         bz2 \
         calendar \
         exif \
+        ftp \
         gd \
         gettext \
         gmp \
         intl \
         mysqli \
-        opcache \
         pdo_mysql \
         shmop \
         soap \
+        sodium \
         sockets \
         sysvmsg \
         sysvsem \
@@ -49,6 +51,7 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         xsl \
         zip \
         pcntl \
+        $( (( ${PHP_VERSION/./} < 85 )) && echo opcache ) \
     && docker-php-ext-enable \
         xdebug \
         redis \
@@ -57,9 +60,12 @@ RUN apk add --no-cache $PHPIZE_DEPS \
 FROM php:${PHP_VERSION}-fpm-alpine
 
 ENV PS1="\u@\h:\w$ "
-ENV HISTFILE="/dev/null"
+ENV HISTFILE="/tmp/.bash_history"
+ENV COMPOSER_HOME="/.composer"
+ENV COMPOSER_MEMORY_LIMIT=-1
 
 RUN apk add --no-cache \
+        libsodium \
         libjpeg-turbo \
         libpng \
         freetype \
@@ -74,7 +80,9 @@ RUN apk add --no-cache \
         icu \
         tidyhtml \
         libxslt \
-        gmp
+        gmp \
+        zip \
+        unzip
 
 COPY --from=php-stage /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 COPY --from=php-stage /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/

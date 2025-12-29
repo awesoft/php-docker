@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  LATEST_VERSION: 8.4
+  LATEST_VERSION: 8.5
   IMAGE_NAME: awesoft/php
   IMAGE_TITLE: Awesoft PHP Image
   IMAGE_DESCRIPTION: A minimal, production-ready PHP Docker image built on Alpine Linux
@@ -24,6 +24,7 @@ jobs:
           - 8.2
           - 8.3
           - 8.4
+          - 8.5
 
     permissions:
       contents: read

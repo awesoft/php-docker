@@ -51,12 +51,10 @@ docker run -it --rm -v $(pwd):/app ghcr.io/awesoft/php:8.4
 ```
 
 ## Commands
-|------------|-----------------------|
 | Command    | Description           |
 |------------|-----------------------|
 | `run-fpm`  | Start PHP-FPM service |
 | `run-cron` | Start cron service    |
-|------------|-----------------------|
 
 
 ## Example `docker-compose.yml` file.

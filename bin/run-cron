@@ -1,6 +1,9 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2086
 
-echo "${CRONTAB}" | crontab -u app -
+if [ -f "${CRONTAB_FILE}" ]; then
+  echo "Loading crontab file '${CRONTAB_FILE}'"
+  crontab -u app "${CRONTAB_FILE}"
+fi
 
 crond -f -P -s

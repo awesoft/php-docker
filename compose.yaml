@@ -14,7 +14,7 @@ services:
     extends:
       service: cli
     environment:
-      CRONTAB: '* * * * * php -v >> /tmp/cron.log'
+      CRONTAB_FILE: /app/crontab.txt
     command: run-cron
     build:
       args:

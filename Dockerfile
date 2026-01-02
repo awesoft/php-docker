@@ -89,7 +89,8 @@ RUN apk add --no-cache \
         gmp \
         zip \
         unzip \
-        openssl
+        openssl \
+        patch
 
 COPY --from=php-stage /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 COPY --from=php-stage /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/

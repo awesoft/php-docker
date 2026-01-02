@@ -7,12 +7,13 @@ A minimal, production-ready PHP Docker image built on Alpine Linux
 ## Features
 
 - Built on top of `php:8.*-alpine`
-- Common extensions preinstalled:
+- Extensions preinstalled:
   - Core: 
     - `bcmath` 
     - `bz2` 
     - `calendar` 
     - `exif` 
+    - `ftp` 
     - `gd` 
     - `gettext` 
     - `gmp` 
@@ -21,13 +22,16 @@ A minimal, production-ready PHP Docker image built on Alpine Linux
     - `pdo_mysql` 
     - `zip` 
     - `soap` 
+    - `sodium` 
     - `sockets` 
     - `pcntl`
   - PECL: 
     - `xdebug` 
     - `redis` 
     - `pcov`
-- Includes `composer` command (version `2.*`)
+  - Zend:
+    - `OPcache`
+- Includes `composer` command (version `2.8`)
 - Non-root `app` user with UID `1000`
 
 ---
@@ -35,13 +39,13 @@ A minimal, production-ready PHP Docker image built on Alpine Linux
 ## Usage
 
 ```bash
-docker run -it --rm awesoft/php:8.4 php -v
+docker run -it --rm -u app awesoft/php:8.4 php -v
 ```
 
 With volume mount:
 
 ```bash
-docker run -it --rm -v $(pwd):/app awesoft/php:8.4
+docker run -it --rm -u app -v $(pwd):/app awesoft/php:8.4
 ```
 
 By default, `xdebug` and `pcov` extensions are disabled.

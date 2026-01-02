@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2086
 
-echo "${CRONTAB}" | crontab -u app -
+[ -f "${CRONTAB_FILE}" ] && crontab -u app "${CRONTAB_FILE}"
 
 crond -f -P -s

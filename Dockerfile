@@ -21,6 +21,7 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         icu-dev \
         tidyhtml-dev \
         libxslt-dev \
+        libsodium-dev \
         gmp-dev \
     && pecl install \
         xdebug \
@@ -32,6 +33,7 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         bz2 \
         calendar \
         exif \
+        ftp \
         gd \
         gettext \
         gmp \
@@ -41,6 +43,7 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         pdo_mysql \
         shmop \
         soap \
+        sodium \
         sockets \
         sysvmsg \
         sysvsem \
@@ -52,14 +55,23 @@ RUN apk add --no-cache $PHPIZE_DEPS \
     && docker-php-ext-enable \
         xdebug \
         redis \
-        pcov
+        pcov \
+        sodium
 
 FROM php:${PHP_VERSION}-fpm-alpine
 
+LABEL org.opencontainers.image.source="https://github.com/awesoft/php-docker"
+LABEL org.opencontainers.image.description="A minimal, production-ready PHP Docker image built on Alpine Linux"
+LABEL org.opencontainers.image.authors="https://github.com/awesoft"
+LABEL org.opencontainers.image.licenses="MIT"
+
 ENV PS1="\u@\h:\w$ "
-ENV HISTFILE="/dev/null"
+ENV HISTFILE="/tmp/.bash_history"
+ENV COMPOSER_HOME="/.composer"
+ENV COMPOSER_MEMORY_LIMIT=-1
 
 RUN apk add --no-cache \
+        libsodium \
         libjpeg-turbo \
         libpng \
         freetype \
@@ -74,7 +86,11 @@ RUN apk add --no-cache \
         icu \
         tidyhtml \
         libxslt \
-        gmp
+        gmp \
+        zip \
+        unzip \
+        openssl \
+        patch
 
 COPY --from=php-stage /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 COPY --from=php-stage /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
@@ -85,13 +101,14 @@ COPY --chown=root:root --chmod=755 bin/docker-entrypoint /docker-entrypoint.sh
 COPY --chown=root:root --chmod=755 etc/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN adduser -u 1000 -D -h /app -s /bin/sh app app \
+    && mkdir -p /.composer \
+    && chown -R app:app /.composer /app \
     && mkdir -p /usr/local/etc/php/extensions/ \
     && mv /usr/local/etc/php/conf.d/docker-php-ext-*.ini /usr/local/etc/php/extensions/ \
-    && chmod -R 775 /usr/local/etc/php/conf.d \
-    && chown -R root:app /usr/local/etc/php/conf.d
+    && chmod -R 775 /usr/local/etc/php/conf.d
 
 WORKDIR /app
 
-CMD ["php", "-v"]
+USER root
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

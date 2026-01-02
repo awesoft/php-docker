@@ -7,17 +7,15 @@ services:
         PHP_VERSION: 8.4
         COMPOSER_VERSION: 2.9
     volumes:
-      - ./var/www:/app:ro
+      - ./var/www:/app:rw,delegated
+      - composer-data:/.composer:rw,delegated
   cron:
     hostname: cron
     extends:
       service: cli
     environment:
-      CRONTAB: '* * * * * php -v >> /tmp/cron.log'
+      CRONTAB_FILE: '/app/crontab.txt'
     command: run-cron
-    build:
-      args:
-        PHP_TYPE: fpm
   fpm:
     hostname: fpm
     extends:
@@ -37,3 +35,5 @@ services:
     volumes:
       - ./var/www:/app:ro
       - ./var/nginx:/etc/nginx/conf.d:ro
+volumes:
+  composer-data:

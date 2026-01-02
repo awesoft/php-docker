@@ -2,7 +2,7 @@
 # shellcheck disable=SC2086
 
 DEBUG_ENABLED=${DEBUG_ENABLED:-0}
-PHP_EXTENSIONS="bcmath bz2 calendar exif gd gettext gmp intl mysqli opcache pdo_mysql shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl redis"
+PHP_EXTENSIONS="bcmath bz2 calendar exif ftp gd gettext gmp intl mysqli opcache pdo_mysql shmop soap sodium sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl redis"
 
 if [ "$DEBUG_ENABLED" = "1" ]; then
     PHP_EXTENSIONS="${PHP_EXTENSIONS} xdebug pcov"

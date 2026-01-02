@@ -8,6 +8,7 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         zip \
         linux-headers \
         build-base \
+        libsodium-dev \
         libjpeg-turbo-dev \
         libpng-dev \
         freetype-dev \
@@ -21,8 +22,8 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         icu-dev \
         tidyhtml-dev \
         libxslt-dev \
-        libsodium-dev \
         gmp-dev \
+        openssl-dev \
     && pecl install \
         xdebug \
         redis \
@@ -39,7 +40,6 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         gmp \
         intl \
         mysqli \
-        opcache \
         pdo_mysql \
         shmop \
         soap \
@@ -52,11 +52,11 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         xsl \
         zip \
         pcntl \
+        $( [ "$(echo $PHP_VERSION | cut -d. -f1,2 | tr -d .)" -lt 85 ] && echo opcache ) \
     && docker-php-ext-enable \
         xdebug \
         redis \
-        pcov \
-        sodium
+        pcov
 
 FROM php:${PHP_VERSION}-fpm-alpine
 
@@ -89,8 +89,7 @@ RUN apk add --no-cache \
         gmp \
         zip \
         unzip \
-        openssl \
-        patch
+        openssl
 
 COPY --from=php-stage /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 COPY --from=php-stage /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
@@ -109,6 +108,6 @@ RUN adduser -u 1000 -D -h /app -s /bin/sh app app \
 
 WORKDIR /app
 
-USER root
+CMD ["php", "-v"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

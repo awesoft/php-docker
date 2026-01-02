@@ -4,17 +4,17 @@ services:
     build:
       context: .
       args:
-        PHP_VERSION: 8.4
-        COMPOSER_VERSION: 2.9
+        PHP_VERSION: 8.5
+        COMPOSER_VERSION: 2.8
     volumes:
-      - ./var/www:/app:rw,delegated
-      - composer-data:/.composer:rw,delegated
+      - ./var/www:/app
+      - composer-data:/.composer
   cron:
     hostname: cron
     extends:
       service: cli
     environment:
-      CRONTAB_FILE: '/app/crontab.txt'
+      CRONTAB_FILE: /app/crontab.txt
     command: run-cron
   fpm:
     hostname: fpm
